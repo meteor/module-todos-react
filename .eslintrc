@@ -1,0 +1,20 @@
+/* Galaxy's Javascript linting configuration (Meteor)
+ *
+ * Documentation on rules can be found at:
+ * http://eslint.org/docs/rules/ <- Optionally append the rulename
+ *
+*/
+
+{
+  "extends": [".eslintrc-meteor"],
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    // allow pure function components to be capitalized
+    "new-cap": 0,
+    // common for pure function components to be wrapped
+    // in parens
+    "no-extra-parens": 0
+  }
+}
