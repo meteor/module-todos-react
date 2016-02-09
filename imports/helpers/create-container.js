@@ -1,5 +1,6 @@
 /**
- * A higher-order-component for loading meteor data using react-komposer.
+ * Helper method for easier creation of meteor data containers
+ * with react-komposer.
  */
 
 import { composeWithTracker } from 'react-komposer';
