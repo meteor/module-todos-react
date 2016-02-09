@@ -48,6 +48,6 @@ export default class Menu extends React.Component {
 }
 
 Menu.propTypes = {
-  user: React.propTypes.object,
-  lists: React.propTypes.array
+  user: React.PropTypes.object,
+  lists: React.PropTypes.array
 };
