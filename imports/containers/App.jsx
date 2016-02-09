@@ -1,30 +1,54 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Lists } from '../api/lists/lists.js';
 import { createContainer } from '../helpers/create-container.js';
+import Menu from '../components/Menu.jsx';
 import Loading from '../components/Loading.jsx';
 
-export const App = ({ lists }) => (
-  <div>
-    <h1>App!</h1>
-    <ul>
-      {lists.map((list, i) => {
-        return <li key={i}>{list.name}</li>;
-      })}
-    </ul>
-  </div>
-);
+const CONNECTION_ISSUE_TIMEOUT = 5000;
+
+export class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuOpen: false,
+      userMenuOpen: false,
+      showConnectionIssue: false
+    };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ showConnectionIssue: true });
+    }, CONNECTION_ISSUE_TIMEOUT);
+  }
+
+  render() {
+    const { user, connected, loading, lists } = this.props;
+    const containerClass = classNames({
+      'menu-open': this.state.menuOpen
+    });
+
+    return (
+      <div id="container" className={containerClass}>
+        <Menu lists={lists} user={user}/>
+      </div>
+    );
+  }
+}
 
 export const AppContainer = createContainer(App, {
-  data: () => {
-    const handle = Meteor.subscribe('Lists.public');
-    if (handle.ready()) {
-      return {
-        lists: Lists.find({$or: [
-          {userId: {$exists: false}},
-          {userId: Meteor.userId()}
-        ]}).fetch()
-      };
-    }
-  },
-  loadingComponent: Loading
+  getMeteorData: () => {
+    const publicHandle = Meteor.subscribe('Lists.public');
+    const privateHandle = Meteor.subscribe('Lists.private');
+    return {
+      user: Meteor.user(),
+      loading: !(publicHandle.ready() && privateHandle.ready()),
+      connected: Meteor.status().connected,
+      lists: Lists.find({$or: [
+        {userId: {$exists: false}},
+        {userId: Meteor.userId()}
+      ]}).fetch()
+    };
+  }
 });

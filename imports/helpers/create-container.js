@@ -7,17 +7,13 @@ import { composeWithTracker } from 'react-komposer';
 
 export function createContainer(Component, options = {}) {
   const {
-    data,
+    getMeteorData,
     loadingComponent = null,
     errorComponent = null,
     pure = true
   } = options;
 
-  if (!data) {
-    throw new Error('Must provide a data function to createContainer().');
-  }
-
-  const compose = (props, onData) => onData(null, data(props));
+  const compose = (props, onData) => onData(null, getMeteorData(props));
 
   return composeWithTracker(
     compose,
