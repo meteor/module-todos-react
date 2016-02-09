@@ -19,6 +19,7 @@ export class App extends React.Component {
 
   componentDidMount() {
     setTimeout(() => {
+      /* eslint-disable react/no-did-mount-set-state */
       this.setState({ showConnectionIssue: true });
     }, CONNECTION_ISSUE_TIMEOUT);
   }
@@ -36,6 +37,13 @@ export class App extends React.Component {
     );
   }
 }
+
+App.propTypes = {
+  user: React.PropTypes.object,
+  connected: React.PropTypes.bool,
+  loading: React.propTypes.bool,
+  lists: React.propTypes.array
+};
 
 export const AppContainer = createContainer(App, {
   getMeteorData: () => {

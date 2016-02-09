@@ -29,7 +29,7 @@ export default class Menu extends React.Component {
     super(props);
     this.state = {
       userMenuOpen: false
-    }
+    };
   }
 
   render() {
@@ -46,3 +46,8 @@ export default class Menu extends React.Component {
     );
   }
 }
+
+Menu.propTypes = {
+  user: React.propTypes.object,
+  lists: React.propTypes.array
+};
