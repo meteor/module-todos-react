@@ -1,5 +1,6 @@
 import { Todos } from './todos.js';
 import { Lists } from '../lists/lists.js';
+import { check } from 'meteor/check';
 
 const incompleteCountDenormalizer = {
   _updateList(listId) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lists } from '../api/lists/lists.js';
-import { createContainer } from '../helpers/create-container.js';
+import { createContainer } from '../helpers/create-container.jsx';
 import ListHeader from '../components/ListHeader.jsx';
 import TodoItem from '../components/TodoItem.jsx';
 
@@ -34,7 +34,6 @@ export class List extends React.Component {
   render() {
     const { list, loading, todos } = this.props;
     const { editingTodo } = this.state;
-
     return (
       <div className="page lists-show">
         <ListHeader list={list}/>
