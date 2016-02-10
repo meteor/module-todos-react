@@ -20,7 +20,7 @@ export default class JoinPage extends React.Component {
     if (!email) {
       errors.email = 'Email required';
     }
-    if (! password) {
+    if (!password) {
       errors.password = 'Password required';
     }
     if (confirm !== password) {
@@ -38,7 +38,7 @@ export default class JoinPage extends React.Component {
     }, err => {
       if (err) {
         this.setState({
-          errors: { 'none': error.reason }
+          errors: { 'none': err.reason }
         });
       }
       this.context.router.push('/');

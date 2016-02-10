@@ -11,13 +11,13 @@
     "react"
   ],
   "rules": {
+    "no-alert": 0,
     // allow pure function components to be capitalized
     "new-cap": 0,
     // common for pure function components to be wrapped in parens
     "no-extra-parens": 0,
     // common for conditional render functions
     "no-else-return": 0,
-
     /**
      * React specific
      */
@@ -50,7 +50,7 @@
     "react/no-is-mounted": 1,
     "react/no-multi-comp": 0,
     "react/no-set-state": 0,
-    "react/no-string-refs": 1,
+    "react/no-string-refs": 0,
     "react/no-unknown-property": 1,
     "react/prefer-es6-class": 1,
     "react/prop-types": 0,

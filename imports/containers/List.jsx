@@ -40,22 +40,22 @@ export class List extends React.Component {
       return <NotFoundPage/>;
     }
 
+    const Todos = !todos || !todos.length
+      ? <NoTodos/>
+      : todos.map(todo => (
+          <TodoItem
+            todo={todo}
+            key={todo._id}
+            editing={todo._id === editingTodo}
+            onEditingChange={this.onEditingChange.bind(this)}/>
+        ));
+
     return (
       <div className="page lists-show">
         <ListHeader list={list}/>
-        <div className="content-scrollable list-items">{
-          loading
-            ? <LoadingTodos/>
-            : (!todos || !todos.length)
-              ? <NoTodos/>
-              : todos.map(todo => (
-                  <TodoItem
-                    todo={todo}
-                    key={todo._id}
-                    editing={todo._id === editingTodo}
-                    onEditingChange={this.onEditingChange.bind(this)}/>
-                ))
-        }</div>
+        <div className="content-scrollable list-items">
+          {loading ? <LoadingTodos/> : Todos}
+        </div>
       </div>
     );
   }
@@ -72,6 +72,6 @@ export const ListContainer = createContainer(List, {
       list,
       listExists,
       todos: listExists && list.todos().fetch()
-    }
+    };
   }
 });

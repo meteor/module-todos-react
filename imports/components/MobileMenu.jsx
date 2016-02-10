@@ -1,6 +1,6 @@
 import React from 'react';
 
-function toggleMenu () {
+function toggleMenu() {
   Session.set('menuOpen', !Session.get('menuOpen'));
 }
 

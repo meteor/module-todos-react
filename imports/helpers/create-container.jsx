@@ -17,13 +17,14 @@ export function createContainer(Component, options = {}) {
     mixins.push(PureRenderMixin);
   }
 
+  /* eslint-disable react/prefer-es6-class */
   return React.createClass({
     mixins,
     getMeteorData() {
       return getMeteorData(this.props);
     },
     render() {
-      return <Component {...this.props} {...this.data}/>
+      return <Component {...this.props} {...this.data}/>;
     }
   });
 }

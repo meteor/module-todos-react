@@ -26,7 +26,7 @@ export default class TodoItem extends React.Component {
     setCheckedStatus.call({
       todoId: this.props.todo._id,
       newCheckedStatus: event.target.checked
-    })
+    });
   }
 
   updateTodo(event) {

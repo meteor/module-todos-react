@@ -28,13 +28,15 @@ export default class ListHeader extends React.Component {
     this.setState({ editing: false });
   }
 
-  saveList(value) {
+  saveList() {
     this.setState({ editing: false });
     updateName.call({
       listId: this.props.list._id,
       newName: this.refs.listNameInput.value
     }, (err) => {
+      /* eslint-disable no-console */
       err && console.error(err);
+      /* eslint-enable no-console */
     });
   }
 
@@ -111,7 +113,7 @@ export default class ListHeader extends React.Component {
   render() {
     const { list } = this.props;
     const { editing } = this.state;
-    let header
+    let header;
     if (editing) {
       header = (
         <form className="list-edit-form" onSubmit={this.onListFormSubmit.bind(this)}>
