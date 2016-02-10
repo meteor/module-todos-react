@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lists } from '../api/lists/lists.js';
+import { Lists } from '../../api/lists/lists.js';
 import { createContainer } from '../helpers/create-container.jsx';
 import ListHeader from '../components/ListHeader.jsx';
 import TodoItem from '../components/TodoItem.jsx';

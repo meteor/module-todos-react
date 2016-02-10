@@ -5,7 +5,7 @@ import {
   setCheckedStatus,
   updateText,
   remove,
-} from '../api/todos/methods.js';
+} from '../../api/todos/methods.js';
 
 export default class TodoItem extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { insert } from '../api/lists/methods.js';
+import { insert } from '../../api/lists/methods.js';
 
 export default class ListList extends React.Component {
   createNewList() {

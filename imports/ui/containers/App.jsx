@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { Lists } from '../api/lists/lists.js';
+import { Lists } from '../../api/lists/lists.js';
 import { createContainer } from '../helpers/create-container.jsx';
 import UserMenu from '../components/UserMenu.jsx';
 import ListList from '../components/ListList.jsx';

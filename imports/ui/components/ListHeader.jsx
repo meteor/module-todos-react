@@ -6,11 +6,11 @@ import {
   makePublic,
   makePrivate,
   remove,
-} from '../api/lists/methods.js';
+} from '../../api/lists/methods.js';
 
 import {
   insert,
-} from '../api/todos/methods.js';
+} from '../../api/todos/methods.js';
 
 export default class ListHeader extends React.Component {
   constructor(props) {
