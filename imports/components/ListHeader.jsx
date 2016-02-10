@@ -1,12 +1,111 @@
 import React from 'react';
 import MobileMenu from './MobileMenu.jsx';
 
+import {
+  updateName,
+  makePublic,
+  makePrivate,
+  remove,
+} from '../api/lists/methods.js';
+
+import {
+  insert,
+} from '../api/todos/methods.js';
+
 export default class ListHeader extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      editing: false
-    };
+    this.state = { editing: false };
+  }
+
+  editList() {
+    this.setState({ editing: true }, () => {
+      this.refs.listNameInput.focus();
+    });
+  }
+
+  cancelEdit() {
+    this.setState({ editing: false });
+  }
+
+  saveList(value) {
+    this.setState({ editing: false });
+    updateName.call({
+      listId: this.props.list._id,
+      newName: this.refs.listNameInput.value
+    }, (err) => {
+      err && console.error(err);
+    });
+  }
+
+  deleteList() {
+    const list = this.props.list;
+    const message = `Are you sure you want to delete the list ${list.name}?`;
+
+    if (confirm(message)) {
+      remove.call({
+        listId: list._id
+      }, (err) => {
+        err && alert(err.error);
+      });
+      this.context.router.push('/');
+    }
+  }
+
+  toggleListPrivacy() {
+    const list = this.props.list;
+    if (list.userId) {
+      makePublic.call({ listId: list._id }, (err) => {
+        err && alert(err.error);
+      });
+    } else {
+      makePrivate.call({ listId: list._id }, (err) => {
+        err && alert(err.error);
+      });
+    }
+  }
+
+  onListFormSubmit(event) {
+    event.preventDefault();
+    this.saveList();
+  }
+
+  onListInputKeyUp(event) {
+    if (event.keyCode === 27) {
+      this.cancelEdit();
+    }
+  }
+
+  onListInputBlur() {
+    if (this.state.editing) {
+      this.saveList();
+    }
+  }
+
+  onListDropdownAction(event) {
+    if (event.target.value === 'delete') {
+      this.deleteList();
+    } else {
+      this.toggleListPrivacy();
+    }
+  }
+
+  createTodo(event) {
+    event.preventDefault();
+    const input = this.refs.newTodoInput;
+    if (input.value.trim()) {
+      insert.call({
+        listId: this.props.list._id,
+        text: input.value
+      }, (err) => {
+        err && alert(err.error);
+      });
+      input.value = '';
+    }
+  }
+
+  focusTodoInput() {
+    this.refs.newTodoInput.focus();
   }
 
   render() {
@@ -15,10 +114,18 @@ export default class ListHeader extends React.Component {
     let header
     if (editing) {
       header = (
-        <form className="list-edit-form">
-          <input type="text" name="name" value={list.name}/>
+        <form className="list-edit-form" onSubmit={this.onListFormSubmit.bind(this)}>
+          <input type="text"
+            name="name"
+            autoComplete="off"
+            ref="listNameInput"
+            defaultValue={list.name}
+            onKeyUp={this.onListInputKeyUp.bind(this)}
+            onBlur={this.onListInputBlur.bind(this)}/>
           <div className="nav-group right">
-            <a href="#" className="nav-item">
+            <a className="nav-item"
+              onMouseDown={this.cancelEdit.bind(this)}
+              onClick={this.cancelEdit.bind(this)}>
               <span className="icon-close" title="Cancel"></span>
             </a>
           </div>
@@ -28,13 +135,15 @@ export default class ListHeader extends React.Component {
       header = (
         <div>
           <MobileMenu/>
-          <h1 className="title-page">
+          <h1 className="title-page" onClick={this.editList.bind(this)}>
             <span className="title-wrapper">{list.name}</span>
             <span className="count-list">{list.incompleteCount}</span>
           </h1>
           <div className="nav-group right">
             <div className="nav-item options-mobile">
-              <select className="list-edit" defaultValue="default">
+              <select className="list-edit"
+                defaultValue="default"
+                onChange={this.onListDropdownAction.bind(this)}>
                 <option disabled value="default">Select an action</option>
                 {list.userId
                   ? <option value="public">Make Public</option>
@@ -44,12 +153,12 @@ export default class ListHeader extends React.Component {
               <span className="icon-cog"></span>
             </div>
             <div className="options-web">
-              <a className="js-toggle-list-privacy nav-item">
+              <a className="nav-item" onClick={this.toggleListPrivacy.bind(this)}>
                 {list.userId
                   ? <span className="icon-lock" title="Make list public"></span>
                   : <span className="icon-unlock" title="Make list private"></span>}
               </a>
-              <a className="js-delete-list nav-item">
+              <a className="nav-item" onClick={this.deleteList.bind(this)}>
                 <span className="icon-trash" title="Delete list"></span>
               </a>
             </div>
@@ -61,11 +170,15 @@ export default class ListHeader extends React.Component {
     return (
       <nav>
         {header}
-        <form className="todo-new input-symbol">
-          <input type="text" placeholder="Type to add new tasks"/>
-          <span className="icon-add"></span>
+        <form className="todo-new input-symbol" onSubmit={this.createTodo.bind(this)}>
+          <input type="text" ref="newTodoInput" placeholder="Type to add new tasks"/>
+          <span className="icon-add" onClick={this.focusTodoInput.bind(this)}></span>
         </form>
       </nav>
     );
   }
 }
+
+ListHeader.contextTypes = {
+  router: React.PropTypes.object
+};

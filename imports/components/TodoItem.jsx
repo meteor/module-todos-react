@@ -16,7 +16,7 @@ export default class TodoItem extends React.Component {
           todoId: this.props.todo._id,
           newText: value
         }, (err) => {
-          err && alert(err);
+          err && alert(err.error);
         });
       }
     }, 300);
@@ -37,7 +37,7 @@ export default class TodoItem extends React.Component {
     remove.call({
       todoId: this.props.todo._id
     }, (err) => {
-      err && alert(err);
+      err && alert(err.error);
     });
   }
 
