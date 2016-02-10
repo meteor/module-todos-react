@@ -19,6 +19,7 @@ export function createContainer(Component, options = {}) {
 
   /* eslint-disable react/prefer-es6-class */
   return React.createClass({
+    displayName: 'MeteorDataContainer',
     mixins,
     getMeteorData() {
       return getMeteorData(this.props);
