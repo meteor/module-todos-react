@@ -4,10 +4,11 @@ import { insert } from '../api/lists/methods.js';
 
 export default class ListList extends React.Component {
   createNewList() {
-    const { router } = this.context
+    const { router } = this.context;
     const listId = insert.call((err) => {
       if (err) {
         router.push('/');
+        /* eslint-disable no-alert */
         alert('Could not create list.');
       }
     });

@@ -18,6 +18,14 @@ export class App extends React.Component {
     };
   }
 
+  componentWillReceiveProps({ loading, children }) {
+    // redirect / to a list once lists are ready
+    if (!loading && !children) {
+      const list = Lists.findOne();
+      this.context.router.replace(`/lists/${ list._id }`);
+    }
+  }
+
   componentDidMount() {
     setTimeout(() => {
       /* eslint-disable react/no-did-mount-set-state */
