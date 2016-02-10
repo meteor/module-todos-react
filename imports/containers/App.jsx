@@ -55,13 +55,6 @@ export class App extends React.Component {
   }
 }
 
-App.propTypes = {
-  user: React.PropTypes.object,
-  connected: React.PropTypes.bool,
-  loading: React.PropTypes.bool,
-  lists: React.PropTypes.array
-};
-
 export const AppContainer = createContainer(App, {
   getMeteorData: () => {
     const publicHandle = Meteor.subscribe('Lists.public');

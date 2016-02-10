@@ -48,7 +48,3 @@ export default class UserMenu extends React.Component {
     }
   }
 }
-
-UserMenu.propTypes = {
-  user: React.PropTypes.object
-};
