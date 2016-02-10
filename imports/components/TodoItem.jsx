@@ -8,6 +8,20 @@ import {
 } from '../api/todos/methods.js';
 
 export default class TodoItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.throttledUpdate = _.throttle(value => {
+      if (value) {
+        updateText.call({
+          todoId: this.props.todo._id,
+          newText: value
+        }, (err) => {
+          err && alert(err);
+        });
+      }
+    }, 300);
+  }
+
   setTodoCheckStatus(event) {
     setCheckedStatus.call({
       todoId: this.props.todo._id,
@@ -16,19 +30,14 @@ export default class TodoItem extends React.Component {
   }
 
   updateTodo(event) {
-    updateText.call({
-      todoId: this.props.todo._id,
-      newText: event.target.value
-    }, (err) => {
-      err && alert(err.error);
-    });
+    this.throttledUpdate(event.target.value);
   }
 
   deleteTodo() {
     remove.call({
       todoId: this.props.todo._id
     }, (err) => {
-      err && alert(err.error); // translate this string after #59
+      err && alert(err);
     });
   }
 
@@ -60,12 +69,11 @@ export default class TodoItem extends React.Component {
         </label>
         <input
           type="text"
-          value={todo.text}
+          defaultValue={todo.text}
           placeholder="Task name"
           onFocus={this.onFocus.bind(this)}
           onBlur={this.onBlur.bind(this)}
-          onChange={this.onBlur.bind(this)}
-          onInput={this.updateTodo.bind(this)}/>
+          onChange={this.updateTodo.bind(this)}/>
         <a
           className="delete-item"
           href="#"
