@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Lists } from '../api/lists/lists.js';
 import { createContainer } from '../helpers/create-container.jsx';
 import UserMenu from '../components/UserMenu.jsx';
@@ -49,8 +50,23 @@ export class App extends React.Component {
 
   render() {
     const { showConnectionIssue } = this.state;
-    const { user, connected, loading, lists, menuOpen, children } = this.props;
+    const {
+      user,
+      connected,
+      loading,
+      lists,
+      menuOpen,
+      children,
+      location
+    } = this.props;
+
     const closeMenu = this.toggleMenu.bind(this, false);
+
+    // clone route components with keys so that they can
+    // have transitions
+    const clonedChildren = children && React.cloneElement(children, {
+      key: location.pathname
+    });
 
     return (
       <div id="container" className={menuOpen ? 'menu-open' : ''}>
@@ -63,7 +79,14 @@ export class App extends React.Component {
           : null}
         <div className="content-overlay" onClick={closeMenu}></div>
         <div id="content-container">
-          {loading ? <Loading/> : children}
+          <ReactCSSTransitionGroup
+            transitionName="fade"
+            transitionEnterTimeout={200}
+            transitionLeaveTimeout={200}>
+            {loading
+              ? <Loading key="loading"/>
+              : clonedChildren}
+          </ReactCSSTransitionGroup>
         </div>
       </div>
     );
