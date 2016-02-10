@@ -3,6 +3,7 @@ import { Lists } from '../api/lists/lists.js';
 import { createContainer } from '../helpers/create-container.jsx';
 import ListHeader from '../components/ListHeader.jsx';
 import TodoItem from '../components/TodoItem.jsx';
+import NotFoundPage from '../pages/NotFoundPage.jsx';
 
 const LoadingTodos = () => (
   <div className="wrapper-message">
@@ -32,8 +33,13 @@ export class List extends React.Component {
   }
 
   render() {
-    const { list, loading, todos } = this.props;
+    const { list, listExists, loading, todos } = this.props;
     const { editingTodo } = this.state;
+
+    if (!listExists) {
+      return <NotFoundPage/>;
+    }
+
     return (
       <div className="page lists-show">
         <ListHeader list={list}/>
@@ -60,10 +66,12 @@ export const ListContainer = createContainer(List, {
     const todosHandle = Meteor.subscribe('Todos.inList', id);
     const loading = !todosHandle.ready();
     const list = Lists.findOne(id);
+    const listExists = !loading && !!list;
     return {
       loading,
       list,
-      todos: !loading && list.todos().fetch()
+      listExists,
+      todos: listExists && list.todos().fetch()
     }
   }
 });
