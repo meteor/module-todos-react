@@ -9,20 +9,22 @@ export default class UserMenu extends React.Component {
     };
   }
 
+  toggle() {
+    this.setState({
+      open: !this.state.open
+    });
+  }
+
   render() {
     const { open } = this.state;
     const { user, logout } = this.props;
-
-    const toggle = () => this.setState({
-      open: !open
-    });
 
     if (user) {
       const email = user.emails[0].address;
       const emailLocalPart = email.substring(0, email.indexOf('@'));
       return (
         <div className="btns-group-vertical">
-          <a href="#" className="btn-secondary" onClick={toggle}>
+          <a href="#" className="btn-secondary" onClick={this.toggle.bind(this)}>
             {open
               ? <span className="icon-arrow-up"></span>
               : <span className="icon-arrow-down"></span>}
