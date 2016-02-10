@@ -15,7 +15,6 @@ standard-minifiers      # JS/CSS minifiers run for production mode
 es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
 
-blaze-html-templates
 aldeed:collection2
 aldeed:simple-schema
 dburles:collection-helpers
@@ -27,3 +26,4 @@ accounts-password
 less
 check
 react-meteor-data
+static-html
