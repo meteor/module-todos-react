@@ -1,13 +1,10 @@
 import React from 'react';
+import MobileMenu from './MobileMenu.jsx';
 
 const NotFound = () => (
   <div className="page not-found">
     <nav>
-      <div className="nav-group">
-        <a href="#" className="js-menu nav-item">
-          <span className="icon-list-unordered"></span>
-        </a>
-      </div>
+      <MobileMenu/>
     </nav>
     <div className="content-scrollable">
       <div className="wrapper-message">

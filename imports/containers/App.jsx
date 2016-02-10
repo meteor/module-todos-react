@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Lists } from '../api/lists/lists.js';
 import { createContainer } from '../helpers/create-container.js';
 import UserMenu from '../components/UserMenu.jsx';
@@ -33,10 +32,8 @@ export class App extends React.Component {
     }, CONNECTION_ISSUE_TIMEOUT);
   }
 
-  toggleMenu() {
-    this.setState({
-      menuOpen: !this.state.menuOpen
-    });
+  toggleMenu(menuOpen = !Session.get('menuOpen')) {
+    Session.set({ menuOpen });
   }
 
   logout() {
@@ -51,14 +48,12 @@ export class App extends React.Component {
   }
 
   render() {
-    const { menuOpen, showConnectionIssue } = this.state;
-    const { user, connected, loading, lists, children } = this.props;
-    const containerClass = classNames({
-      'menu-open': menuOpen
-    });
+    const { showConnectionIssue } = this.state;
+    const { user, connected, loading, lists, menuOpen, children } = this.props;
+    const closeMenu = this.toggleMenu.bind(this, false);
 
     return (
-      <div id="container" className={containerClass}>
+      <div id="container" className={menuOpen ? 'menu-open' : ''}>
         <section id="menu">
           <UserMenu user={user} logout={this.logout.bind(this)}/>
           <ListList lists={lists}/>
@@ -66,7 +61,7 @@ export class App extends React.Component {
         {showConnectionIssue && !connected
           ? <ConnectionNotification/>
           : null}
-        <div className="content-overlay" onClick={this.toggleMenu.bind(this)}></div>
+        <div className="content-overlay" onClick={closeMenu}></div>
         <div id="content-container">
           {loading ? <Loading/> : children}
         </div>
@@ -87,6 +82,7 @@ export const AppContainer = createContainer(App, {
       user: Meteor.user(),
       loading: !(publicHandle.ready() && privateHandle.ready()),
       connected: Meteor.status().connected,
+      menuOpen: Session.get('menuOpen'),
       lists: Lists.find({$or: [
         {userId: {$exists: false}},
         {userId: Meteor.userId()}

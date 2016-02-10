@@ -9,7 +9,8 @@ export default class UserMenu extends React.Component {
     };
   }
 
-  toggle() {
+  toggle(e) {
+    e.stopPropagation();
     this.setState({
       open: !this.state.open
     });
