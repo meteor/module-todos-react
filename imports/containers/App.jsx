@@ -25,28 +25,40 @@ export class App extends React.Component {
     }, CONNECTION_ISSUE_TIMEOUT);
   }
 
+  toggleMenu() {
+    this.setState({
+      menuOpen: !this.state.menuOpen
+    });
+  }
+
+  logout() {
+    Meteor.logout();
+
+    // if we are on a private list, we'll need to go to a public one
+    const list = Lists.findOne(this.props.params.id);
+    if (list.userId) {
+      const publicList = Lists.findOne({ userId: { $exists: false }});
+      this.context.router.push(`/lists/${ publicList._id }`);
+    }
+  }
+
   render() {
     const { menuOpen, showConnectionIssue } = this.state;
     const { user, connected, loading, lists, children } = this.props;
-
     const containerClass = classNames({
       'menu-open': menuOpen
-    });
-
-    const toggleMenu = () => this.setState({
-      menuOpen: !menuOpen
     });
 
     return (
       <div id="container" className={containerClass}>
         <section id="menu">
-          <UserMenu user={user}/>
+          <UserMenu user={user} logout={this.logout.bind(this)}/>
           <ListList lists={lists}/>
         </section>
         {showConnectionIssue && !connected
           ? <ConnectionNotification/>
           : null}
-        <div className="content-overlay" onClick={toggleMenu}></div>
+        <div className="content-overlay" onClick={this.toggleMenu.bind(this)}></div>
         <div id="content-container">
           {loading ? <Loading/> : children}
         </div>
@@ -54,6 +66,10 @@ export class App extends React.Component {
     );
   }
 }
+
+App.contextTypes = {
+  router: React.PropTypes.object
+};
 
 export const AppContainer = createContainer(App, {
   getMeteorData: () => {

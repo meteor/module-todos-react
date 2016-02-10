@@ -1,29 +1,48 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { insert } from '../api/lists/methods.js';
 
-const ListList = ({ lists, createNewList }) => (
-  <div className="list-todos">
-    <a className="link-list-new" onClick={createNewList}>
-      <span className="icon-plus"></span>
-      New List
-    </a>
-    {lists.map(list => (
-      <Link
-        to={`/lists/${ list._id }`}
-        key={list._id}
-        title={list.name}
-        className="list-todo"
-        activeClassName="active">
-        {list.userId
-          ? <span className="icon-lock"></span>
-          : null}
-        {list.incompleteCount
-          ? <span className="count-list">{list.incompleteCount}</span>
-          : null}
-        {list.name}
-      </Link>
-    ))}
-  </div>
-);
+export default class ListList extends React.Component {
+  createNewList() {
+    const { router } = this.context
+    const listId = insert.call((err) => {
+      if (err) {
+        router.push('/');
+        alert('Could not create list.');
+      }
+    });
+    router.push(`/lists/${ listId }`);
+  }
 
-export default ListList;
+  render() {
+    const { lists } = this.props;
+    return (
+      <div className="list-todos">
+        <a className="link-list-new" onClick={this.createNewList.bind(this)}>
+          <span className="icon-plus"></span>
+          New List
+        </a>
+        {lists.map(list => (
+          <Link
+            to={`/lists/${ list._id }`}
+            key={list._id}
+            title={list.name}
+            className="list-todo"
+            activeClassName="active">
+            {list.userId
+              ? <span className="icon-lock"></span>
+              : null}
+            {list.incompleteCount
+              ? <span className="count-list">{list.incompleteCount}</span>
+              : null}
+            {list.name}
+          </Link>
+        ))}
+      </div>
+    );
+  }
+}
+
+ListList.contextTypes = {
+  router: React.PropTypes.object
+};

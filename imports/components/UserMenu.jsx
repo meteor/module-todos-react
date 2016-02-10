@@ -11,16 +11,11 @@ export default class UserMenu extends React.Component {
 
   render() {
     const { open } = this.state;
-    const { user } = this.props;
+    const { user, logout } = this.props;
 
     const toggle = () => this.setState({
       open: !open
     });
-
-    const logout = () => {
-      Meteor.logout();
-      // TODO: redirect to a public list if currently on a private one
-    };
 
     if (user) {
       const email = user.emails[0].address;

@@ -7,7 +7,7 @@ Meteor.startup(() => {
   render((
     <Router history={browserHistory}>
       <Route path="/" component={AppContainer}>
-        <Route path="/lists/:id" component={() => <div>hi</div>}/>
+        <Route path="/lists/:id" component={({ params }) => <div>{params.id}</div>}/>
       </Route>
     </Router>
   ), document.getElementById('app'));
