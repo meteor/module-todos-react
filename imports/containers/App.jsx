@@ -2,7 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Lists } from '../api/lists/lists.js';
 import { createContainer } from '../helpers/create-container.js';
-import Menu from '../components/Menu.jsx';
+import UserMenu from '../components/UserMenu.jsx';
+import ListList from '../components/ListList.jsx';
+import ConnectionNotification from '../components/ConnectionNotification.jsx';
 import Loading from '../components/Loading.jsx';
 
 const CONNECTION_ISSUE_TIMEOUT = 5000;
@@ -12,7 +14,6 @@ export class App extends React.Component {
     super(props);
     this.state = {
       menuOpen: false,
-      userMenuOpen: false,
       showConnectionIssue: false
     };
   }
@@ -25,14 +26,30 @@ export class App extends React.Component {
   }
 
   render() {
-    const { user, connected, loading, lists } = this.props;
+    const { menuOpen, showConnectionIssue } = this.state;
+    const { user, connected, loading, lists, children } = this.props;
+
     const containerClass = classNames({
-      'menu-open': this.state.menuOpen
+      'menu-open': menuOpen
+    });
+
+    const toggleMenu = () => this.setState({
+      menuOpen: !menuOpen
     });
 
     return (
       <div id="container" className={containerClass}>
-        <Menu lists={lists} user={user}/>
+        <section id="menu">
+          <UserMenu user={user}/>
+          <ListList lists={lists}/>
+        </section>
+        {showConnectionIssue && !connected
+          ? <ConnectionNotification/>
+          : null}
+        <div className="content-overlay" onClick={toggleMenu}></div>
+        <div id="content-container">
+          {loading ? <Loading/> : children}
+        </div>
       </div>
     );
   }
