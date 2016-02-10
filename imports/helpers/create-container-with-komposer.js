@@ -1,6 +1,7 @@
 /**
  * Helper method for easier creation of meteor data containers
- * with react-komposer.
+ * with react-komposer. WIP. There are some currently some weird
+ * subscription issues for the initial render.
  */
 
 import { composeWithTracker } from 'react-komposer';
