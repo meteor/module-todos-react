@@ -46,6 +46,7 @@ export class List extends React.Component {
               : todos.map(todo => (
                   <TodoItem
                     todo={todo}
+                    key={todo._id}
                     editing={todo._id === editingTodo}
                     onEditingChange={this.onEditingChange.bind(this)}/>
                 ))
@@ -63,7 +64,7 @@ export const ListContainer = createContainer(List, {
     return {
       loading,
       list,
-      todos: !loading && list && list.todos()
+      todos: !loading && list.todos().fetch()
     }
   }
 });

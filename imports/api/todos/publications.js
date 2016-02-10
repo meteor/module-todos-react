@@ -30,8 +30,7 @@ Meteor.publishComposite('Todos.inList', function(listId) {
     children: [{
       find(list) {
         return Todos.find({ listId: list._id }, {
-          fields: Todos.publicFields,
-          limit: 2
+          fields: Todos.publicFields
         });
       }
     }]
