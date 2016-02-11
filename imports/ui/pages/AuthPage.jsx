@@ -1,6 +1,7 @@
 import React from 'react';
-import MobileMenu from './MobileMenu.jsx';
+import MobileMenu from '../components/MobileMenu.jsx';
 
+// a common layout wrapper for auth pages
 const AuthPage = ({ content, link }) => (
   <div className="page auth">
     <nav>

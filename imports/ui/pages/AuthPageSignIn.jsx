@@ -1,10 +1,8 @@
 import React from 'react';
-import AuthPage from '../components/AuthPage.jsx';
-import AuthErrors from '../components/AuthErrors.jsx';
+import AuthPage from './AuthPage.jsx';
 import { Link } from 'react-router';
-import { Accounts } from 'meteor/accounts-base';
 
-export default class JoinPage extends React.Component {
+export default class SignInPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = { errors: {}};
@@ -14,7 +12,6 @@ export default class JoinPage extends React.Component {
     event.preventDefault();
     const email = this.refs.email.value;
     const password = this.refs.password.value;
-    const confirm = this.refs.confirm.value;
     const errors = {};
 
     if (!email) {
@@ -23,19 +20,13 @@ export default class JoinPage extends React.Component {
     if (!password) {
       errors.password = 'Password required';
     }
-    if (confirm !== password) {
-      errors.confirm = 'Please confirm your password';
-    }
 
     this.setState({ errors });
     if (Object.keys(errors).length) {
       return;
     }
 
-    Accounts.createUser({
-      email,
-      password
-    }, err => {
+    Meteor.loginWithPassword(email, password, err => {
       if (err) {
         this.setState({
           errors: { 'none': err.reason }
@@ -52,10 +43,14 @@ export default class JoinPage extends React.Component {
 
     const content = (
       <div className="wrapper-auth">
-        <h1 className="title-auth">Join.</h1>
-        <p className="subtitle-auth" >Joining allows you to make private lists</p>
+        <h1 className="title-auth">Sign In.</h1>
+        <p className="subtitle-auth" >Signing in allows you to view private lists</p>
         <form onSubmit={this.onSubmit.bind(this)}>
-          <AuthErrors messages={errorMessages}/>
+          <div className="list-errors">
+            {errorMessages.map(msg => (
+              <div className="list-item" key={msg}>{msg}</div>
+            ))}
+          </div>
           <div className={`input-symbol ${errorClass('email')}`}>
             <input type="email" name="email" ref="email" placeholder="Your Email"/>
             <span className="icon-email" title="Your Email"></span>
@@ -64,21 +59,17 @@ export default class JoinPage extends React.Component {
             <input type="password" name="password" ref="password" placeholder="Password"/>
             <span className="icon-lock" title="Password"></span>
           </div>
-          <div className={`input-symbol ${errorClass('confirm')}`}>
-            <input type="password" name="confirm" ref="confirm" placeholder="Confirm Password"/>
-            <span className="icon-lock" title="Confirm Password"></span>
-          </div>
-          <button type="submit" className="btn-primary">Join Now</button>
+          <button type="submit" className="btn-primary">Sign in</button>
         </form>
       </div>
     );
 
-    const link = <Link to="/signin" className="link-auth-alt">Have an account? Sign in</Link>;
+    const link = <Link to="/join" className="link-auth-alt">Need an account? Join Now.</Link>;
 
     return <AuthPage content={content} link={link}/>;
   }
 }
 
-JoinPage.contextTypes = {
+SignInPage.contextTypes = {
   router: React.PropTypes.object
 };

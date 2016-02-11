@@ -24,7 +24,7 @@ export default class UserMenu extends React.Component {
       const email = user.emails[0].address;
       const emailLocalPart = email.substring(0, email.indexOf('@'));
       return (
-        <div className="btns-group-vertical">
+        <div className="user-menu vertical">
           <a href="#" className="btn-secondary" onClick={this.toggle.bind(this)}>
             {open
               ? <span className="icon-arrow-up"></span>
@@ -38,7 +38,7 @@ export default class UserMenu extends React.Component {
       );
     } else {
       return (
-        <div className="btns-group">
+        <div className="user-menu">
           <Link to="/signin" className="btn-secondary">Sign In</Link>
           <Link to="/join" className="btn-secondary">Join</Link>
         </div>

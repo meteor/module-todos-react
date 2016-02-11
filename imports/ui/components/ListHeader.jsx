@@ -170,7 +170,7 @@ export default class ListHeader extends React.Component {
     }
 
     return (
-      <nav>
+      <nav className="list-header">
         {header}
         <form className="todo-new input-symbol" onSubmit={this.createTodo.bind(this)}>
           <input type="text" ref="newTodoInput" placeholder="Type to add new tasks"/>

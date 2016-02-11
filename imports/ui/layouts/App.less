@@ -1,4 +1,4 @@
-@import './imports.import.less';
+@import '{}/imports/ui/stylesheets/utils.less';
 
 @menu-width: 270px;
 @column: 5.55555%;
@@ -30,6 +30,8 @@ body {
 
 #menu {
   .position(absolute, 0, 0, 0, 0, @menu-width);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #content-container {

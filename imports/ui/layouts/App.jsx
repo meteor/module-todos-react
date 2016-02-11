@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Lists } from '../../api/lists/lists.js';
-import { createContainer } from '../helpers/create-container.jsx';
 import UserMenu from '../components/UserMenu.jsx';
 import ListList from '../components/ListList.jsx';
 import ConnectionNotification from '../components/ConnectionNotification.jsx';
@@ -9,7 +8,7 @@ import Loading from '../components/Loading.jsx';
 
 const CONNECTION_ISSUE_TIMEOUT = 5000;
 
-export class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -96,20 +95,3 @@ export class App extends React.Component {
 App.contextTypes = {
   router: React.PropTypes.object
 };
-
-export const AppContainer = createContainer(App, {
-  getMeteorData: () => {
-    const publicHandle = Meteor.subscribe('Lists.public');
-    const privateHandle = Meteor.subscribe('Lists.private');
-    return {
-      user: Meteor.user(),
-      loading: !(publicHandle.ready() && privateHandle.ready()),
-      connected: Meteor.status().connected,
-      menuOpen: Session.get('menuOpen'),
-      lists: Lists.find({$or: [
-        {userId: {$exists: false}},
-        {userId: Meteor.userId()}
-      ]}).fetch()
-    };
-  }
-});

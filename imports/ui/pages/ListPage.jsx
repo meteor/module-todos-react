@@ -1,24 +1,10 @@
 import React from 'react';
-import { Lists } from '../../api/lists/lists.js';
-import { createContainer } from '../helpers/create-container.jsx';
 import ListHeader from '../components/ListHeader.jsx';
 import TodoItem from '../components/TodoItem.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
+import Message from '../components/Message.jsx';
 
-const LoadingTodos = () => (
-  <div className="wrapper-message">
-    <div className="title-message">Loading tasks...</div>
-  </div>
-);
-
-const NoTodos = () => (
-  <div className="wrapper-message">
-    <div className="title-message">No tasks here</div>
-    <div className="subtitle-message">Add new tasks using the field above</div>
-  </div>
-);
-
-export class List extends React.Component {
+export default class ListPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,7 +27,9 @@ export class List extends React.Component {
     }
 
     const Todos = !todos || !todos.length
-      ? <NoTodos/>
+      ? <Message
+          title="No tasks here"
+          subtitle="Add new tasks using the field above"/>
       : todos.map(todo => (
           <TodoItem
             todo={todo}
@@ -54,24 +42,9 @@ export class List extends React.Component {
       <div className="page lists-show">
         <ListHeader list={list}/>
         <div className="content-scrollable list-items">
-          {loading ? <LoadingTodos/> : Todos}
+          {loading ? <Message title="Loading tasks..."/> : Todos}
         </div>
       </div>
     );
   }
 }
-
-export const ListContainer = createContainer(List, {
-  getMeteorData: ({ params: { id }}) => {
-    const todosHandle = Meteor.subscribe('Todos.inList', id);
-    const loading = !todosHandle.ready();
-    const list = Lists.findOne(id);
-    const listExists = !loading && !!list;
-    return {
-      loading,
-      list,
-      listExists,
-      todos: listExists && list.todos().fetch()
-    };
-  }
-});

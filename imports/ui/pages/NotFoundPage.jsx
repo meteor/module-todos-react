@@ -1,5 +1,6 @@
 import React from 'react';
 import MobileMenu from '../components/MobileMenu.jsx';
+import Message from '../components/Message.jsx';
 
 const NotFoundPage = () => (
   <div className="page not-found">
@@ -7,9 +8,7 @@ const NotFoundPage = () => (
       <MobileMenu/>
     </nav>
     <div className="content-scrollable">
-      <div className="wrapper-message">
-        <div className="title-message">Page not found</div>
-      </div>
+      <Message title="Page not found"/>
     </div>
   </div>
 );
