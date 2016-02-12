@@ -12,7 +12,7 @@ export default createContainer(ListPage, {
       loading,
       list,
       listExists,
-      todos: listExists && list.todos().fetch()
+      todos: listExists ? list.todos().fetch() : []
     };
   }
 });

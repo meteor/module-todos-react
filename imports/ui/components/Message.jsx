@@ -7,4 +7,9 @@ const Message = ({ title, subtitle }) => (
   </div>
 );
 
+Message.propTypes = {
+  title: React.PropTypes.string,
+  subtitle: React.PropTypes.string
+};
+
 export default Message;

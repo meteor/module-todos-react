@@ -14,4 +14,9 @@ const AuthPage = ({ content, link }) => (
   </div>
 );
 
+AuthPage.propTypes = {
+  content: React.PropTypes.element,
+  link: React.PropTypes.element
+};
+
 export default AuthPage;

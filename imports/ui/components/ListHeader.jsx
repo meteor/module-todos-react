@@ -181,6 +181,10 @@ export default class ListHeader extends React.Component {
   }
 }
 
+ListHeader.propTypes = {
+  list: React.PropTypes.object
+};
+
 ListHeader.contextTypes = {
   router: React.PropTypes.object
 };

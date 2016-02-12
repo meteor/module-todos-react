@@ -44,6 +44,10 @@ export default class ListList extends React.Component {
   }
 }
 
+ListList.propTypes = {
+  lists: React.PropTypes.array
+};
+
 ListList.contextTypes = {
   router: React.PropTypes.object
 };

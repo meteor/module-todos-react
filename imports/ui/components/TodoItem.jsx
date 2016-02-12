@@ -85,3 +85,8 @@ export default class TodoItem extends React.Component {
     );
   }
 }
+
+TodoItem.propTypes = {
+  todo: React.PropTypes.object,
+  editing: React.PropTypes.bool
+};
