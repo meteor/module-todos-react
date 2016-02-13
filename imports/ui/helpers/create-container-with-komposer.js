@@ -7,6 +7,12 @@
 import { composeWithTracker } from 'react-komposer';
 
 export function createContainer(options = {}, Component) {
+  if (typeof options === 'function') {
+    options = {
+      getMeteorData: options
+    }
+  }
+
   const {
     getMeteorData,
     loadingComponent = null,
