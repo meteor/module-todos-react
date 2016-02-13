@@ -110,68 +110,70 @@ export default class ListHeader extends React.Component {
     this.refs.newTodoInput.focus();
   }
 
-  render() {
+  renderDefaultHeader() {
     const { list } = this.props;
-    const { editing } = this.state;
-    let header;
-    if (editing) {
-      header = (
-        <form className="list-edit-form" onSubmit={this.onListFormSubmit.bind(this)}>
-          <input type="text"
-            name="name"
-            autoComplete="off"
-            ref="listNameInput"
-            defaultValue={list.name}
-            onKeyUp={this.onListInputKeyUp.bind(this)}
-            onBlur={this.onListInputBlur.bind(this)}/>
-          <div className="nav-group right">
-            <a className="nav-item"
-              onMouseDown={this.cancelEdit.bind(this)}
-              onClick={this.cancelEdit.bind(this)}>
-              <span className="icon-close" title="Cancel"></span>
+    return (
+      <div>
+        <MobileMenu/>
+        <h1 className="title-page" onClick={this.editList.bind(this)}>
+          <span className="title-wrapper">{list.name}</span>
+          <span className="count-list">{list.incompleteCount}</span>
+        </h1>
+        <div className="nav-group right">
+          <div className="nav-item options-mobile">
+            <select className="list-edit"
+              defaultValue="default"
+              onChange={this.onListDropdownAction.bind(this)}>
+              <option disabled value="default">Select an action</option>
+              {list.userId
+                ? <option value="public">Make Public</option>
+                : <option value="private">Make Private</option>}
+              <option value="delete">Delete</option>
+            </select>
+            <span className="icon-cog"></span>
+          </div>
+          <div className="options-web">
+            <a className="nav-item" onClick={this.toggleListPrivacy.bind(this)}>
+              {list.userId
+                ? <span className="icon-lock" title="Make list public"></span>
+                : <span className="icon-unlock" title="Make list private"></span>}
+            </a>
+            <a className="nav-item" onClick={this.deleteList.bind(this)}>
+              <span className="icon-trash" title="Delete list"></span>
             </a>
           </div>
-        </form>
-      );
-    } else {
-      header = (
-        <div>
-          <MobileMenu/>
-          <h1 className="title-page" onClick={this.editList.bind(this)}>
-            <span className="title-wrapper">{list.name}</span>
-            <span className="count-list">{list.incompleteCount}</span>
-          </h1>
-          <div className="nav-group right">
-            <div className="nav-item options-mobile">
-              <select className="list-edit"
-                defaultValue="default"
-                onChange={this.onListDropdownAction.bind(this)}>
-                <option disabled value="default">Select an action</option>
-                {list.userId
-                  ? <option value="public">Make Public</option>
-                  : <option value="private">Make Private</option>}
-                <option value="delete">Delete</option>
-              </select>
-              <span className="icon-cog"></span>
-            </div>
-            <div className="options-web">
-              <a className="nav-item" onClick={this.toggleListPrivacy.bind(this)}>
-                {list.userId
-                  ? <span className="icon-lock" title="Make list public"></span>
-                  : <span className="icon-unlock" title="Make list private"></span>}
-              </a>
-              <a className="nav-item" onClick={this.deleteList.bind(this)}>
-                <span className="icon-trash" title="Delete list"></span>
-              </a>
-            </div>
-          </div>
         </div>
-      );
-    }
+      </div>
+    );
+  }
 
+  renderEditingHeader() {
+    const { list } = this.props;
+    return (
+      <form className="list-edit-form" onSubmit={this.onListFormSubmit.bind(this)}>
+        <input type="text"
+          name="name"
+          autoComplete="off"
+          ref="listNameInput"
+          defaultValue={list.name}
+          onKeyUp={this.onListInputKeyUp.bind(this)}
+          onBlur={this.onListInputBlur.bind(this)}/>
+        <div className="nav-group right">
+          <a className="nav-item"
+            onMouseDown={this.cancelEdit.bind(this)}
+            onClick={this.cancelEdit.bind(this)}>
+            <span className="icon-close" title="Cancel"></span>
+          </a>
+        </div>
+      </form>
+    );
+  }
+
+  render() {
+    const { editing } = this.state;
     return (
       <nav className="list-header">
-        {header}
+        {editing ? this.renderEditingHeader() : this.renderDefaultHeader()}
         <form className="todo-new input-symbol" onSubmit={this.createTodo.bind(this)}>
           <input type="text" ref="newTodoInput" placeholder="Type to add new tasks"/>
           <span className="icon-add" onClick={this.focusTodoInput.bind(this)}></span>
