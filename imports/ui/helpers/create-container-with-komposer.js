@@ -6,7 +6,7 @@
 
 import { composeWithTracker } from 'react-komposer';
 
-export function createContainer(Component, options = {}) {
+export function createContainer(options = {}, Component) {
   const {
     getMeteorData,
     loadingComponent = null,

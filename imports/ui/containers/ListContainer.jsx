@@ -2,7 +2,7 @@ import { Lists } from '../../api/lists/lists.js';
 import { createContainer } from '../helpers/create-container.jsx';
 import ListPage from '../pages/ListPage.jsx';
 
-export default createContainer(ListPage, {
+export default createContainer({
   getMeteorData: ({ params: { id }}) => {
     const todosHandle = Meteor.subscribe('Todos.inList', id);
     const loading = !todosHandle.ready();
@@ -15,4 +15,4 @@ export default createContainer(ListPage, {
       todos: listExists ? list.todos().fetch() : []
     };
   }
-});
+}, ListPage);

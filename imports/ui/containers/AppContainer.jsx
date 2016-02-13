@@ -2,7 +2,7 @@ import { Lists } from '../../api/lists/lists.js';
 import { createContainer } from '../helpers/create-container.jsx';
 import App from '../layouts/App.jsx';
 
-export default createContainer(App, {
+export default createContainer({
   getMeteorData: () => {
     const publicHandle = Meteor.subscribe('Lists.public');
     const privateHandle = Meteor.subscribe('Lists.private');
@@ -17,4 +17,4 @@ export default createContainer(App, {
       ]}).fetch()
     };
   }
-});
+}, App);
